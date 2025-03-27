@@ -3,12 +3,13 @@
 -- :i (info)    (++)            (Info sobre algo)
 
 import Data.List
+import Data.Char
 
 -- 1] --------------------------------------------------------------------------------------
 -- a)
 not1 b = case b of
-    True -> False
-    False -> True
+     True -> False
+     False -> True
 
 -- b)
 init2 :: [a] -> [a]
@@ -17,7 +18,7 @@ init2 (x:xs)   = x : init2 xs
 init2 []       = error "empty list"
 
 -- c)
-length2 :: Num a => [a] -> Int
+length2 :: Num b => [a] -> b
 length2 []      = 0
 length2 (_:l)   = 1 + length2 l
 
@@ -26,8 +27,8 @@ list123 = 1 : 2 : 3 : []
 
 -- e)
 (++!) :: [a] -> [a] -> [a]
-[]       ++! ys = ys
-(x:xs)   ++! ys = x : xs ++! ys
+[]      ++! ys   = ys
+(x:xs)  ++! ys   = x : xs ++! ys
 
 -- f)
 addToTail :: Num a => a -> [a] -> [a]
@@ -39,9 +40,9 @@ listmin xs = head (sort xs)
 
 -- h)
 smap :: (a -> b) -> [a] -> [b]
-smap f [] = []
-smap f [x] = [f x]
-smap f (x:xs) = f x : smap f xs
+smap f []       = []
+smap f [x]      = [f x]
+smap f (x:xs)   = f x : smap f xs
 
 -- 2] --------------------------------------------------------------------------------------
 five :: a -> Int
@@ -60,9 +61,9 @@ first (a,_) = a
 
 
 sign :: (Ord a, Num a) => a -> Int
-sign a | a > 0      = 1
-       | a == 0     = 0
-       | otherwise  = -1
+sign a | a > 0       = 1
+       | a == 0      = 0
+       | otherwise   = -1
 
 vabs1 :: (Ord a, Num a) => a -> a
 vabs1 a | a >= 0   = a
@@ -74,8 +75,8 @@ vabs2 a | sign a == -1   = -a
 
 pot :: (Eq a, Integral a, Num b) => a -> b -> b
 pot a b = b ^ a
--- pot a b | a == 1     = b
---         | otherwise  = pot (a - 1) (b * b) 
+-- pot a b | a == 1      = b
+--         | otherwise   = pot (a - 1) (b * b) 
 
 xor :: Bool -> Bool -> Bool
 xor True False = True
@@ -105,44 +106,62 @@ matches n ms = [x | x <- ms, x == n]
 
 cuadrupla :: (Num a, Enum a, Eq a) => a -> [(a,a,a,a)]
 cuadrupla n = [(x,y,z,w) | x <- [0..n], y <- [0..n], z <- [0..n], w <- [0..n],
-                       (x ^ 2) + (y ^ 2) == (z ^ 2) + (w ^ 2)]
+                       (x^2) + (y^2) == (z^2) + (w^2)]
 
 unique :: Eq a => [a] -> [a]
 unique xs = [x | (x,i) <- zip xs [0..], not(elem x (take i xs))]
 
 -- 6] --------------------------------------------------------------------------------------
---scalarProduct :: (Num a) => [a] -> [a] -> a
---scalarProduct xs ys | 
+scalarProduct :: (Num a) => [a] -> [a] -> a
+scalarProduct xs ys = sum [x*y | (x,y) <- zip xs ys] 
 
 -- 7] --------------------------------------------------------------------------------------
 suma :: Num a => [a] -> a
-suma []      = 0
-suma (x:xs)  = x + suma xs
+suma []       = 0
+suma (x:xs)   = x + suma xs
 
 alguno :: [Bool] -> Bool
-alguno [] = False
-alguno (x:xs) = x || alguno xs
+alguno []       = False
+alguno (x:xs)   = x || alguno xs
 
 todos :: [Bool] -> Bool
-todos [] = False
-todos [x] = x
-todos (x:xs) = x && todos xs
+todos []       = False
+todos [x]      = x
+todos (x:xs)   = x && todos xs
 
---codes ::
---codes
+codes :: [Char] -> [Int]
+codes []       = []
+codes (x:xs)   = ord x : codes xs
 
---restos ::
---restos
+restos :: Integral a => [a] -> a -> [a]
+restos [] n       = []
+restos (x:xs) n   = (mod x n) : (restos xs n)
 
 cuadrados :: Num a => [a] -> [a]
-cuadrados [] = []
-cuadrados (x:xs) = (x ^ 2) : cuadrados xs
+cuadrados []       = []
+cuadrados (x:xs)   = (x^2) : cuadrados xs
 
---longitudes :: [[a]] -> [a]
---longitudes
+longitudes :: Num b => [[a]] -> [b]
+longitudes []         = []
+longitudes (xs:xss)   = length2 xs : longitudes xss
+
+orden :: (Num a, Ord a) => [(a,a)] -> [(a,a)]
+orden []     = []
+orden (x:xs) | fst x < (snd x * 3)   = x : orden xs
+             | otherwise             = orden xs
 
 pares :: Integral a => [a] -> [a]
-pares [] = []
+pares []     = []
 pares (x:xs) | mod x 2 == 0   = x : pares xs
              | otherwise      = pares xs
+
+letras :: [Char] -> [Char]
+letras []     = []
+letras (x:xs) | isLetter x   = x : letras xs
+              | otherwise    = letras xs
+
+masDe :: (Ord b, Num b) => [[a]] -> b -> [[a]]
+masDe [] _       = []
+masDe (xs:xss) n | (length2 xs) > n   = xs : masDe xss n
+                 | otherwise          = masDe xss n
 

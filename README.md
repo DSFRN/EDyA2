@@ -1,2 +1,2 @@
 # EDyA II
-Repositoria de la materia Estructura de Datos y Algorimos II.
+Repositorio de la materia Estructuras de Datos y Algoritmos II.

@@ -1,9 +1,10 @@
--- :l (load)    archivo.hs      (Carga un archivo .hs)
--- :r (reload)                  (Carga el último archivo cargado)
--- :i (info)    (++)            (Info sobre algo)
+-- :l (load)    file.hs      (Carga un archivo .hs)
+-- :r (reload)               (Carga el último archivo cargado)
+-- :i (info)    function     (Info sobre algo)
+-- :q (quit)                 (Salir de GHCI)       
 
-import Data.List
-import Data.Char
+import Data.List -- (map, length, head, tail, ...)
+import Data.Char -- (ord, isLetter, isLower, isUpper, ...)
 
 -- 1] --------------------------------------------------------------------------------------
 -- a)

@@ -10,7 +10,7 @@
       eq a b = a == b
 -- d) showVal, donde
       showVal :: Show a => a -> String
-      showVal x = "Valor:" ++ show x
+      showVal x = "Valor:" ++ show x 
 
 
 

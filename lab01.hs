@@ -3,6 +3,8 @@
 -- :i (info)    function     (Info sobre algo)
 -- :q (quit)                 (Salir de GHCI)       
 
+module Lab1C where
+
 import Data.List -- (map, length, head, tail, ...)
 import Data.Char -- (ord, isLetter, isLower, isUpper, ...)
 
@@ -165,4 +167,3 @@ masDe :: (Ord b, Num b) => [[a]] -> b -> [[a]]
 masDe [] _       = []
 masDe (xs:xss) n | (length2 xs) > n   = xs : masDe xss n
                  | otherwise          = masDe xss n
-

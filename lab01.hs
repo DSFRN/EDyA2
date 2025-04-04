@@ -4,7 +4,7 @@
 -- :q (quit)                 (Salir de GHCI)       
 
 module Lab1 where
-
+ 
 import Data.List -- (map, length, head, tail, ...)
 import Data.Char -- (ord, isLetter, isLower, isUpper, ...)
 

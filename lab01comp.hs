@@ -1,5 +1,5 @@
 module Lab1C where
-
+ 
 import Data.List
 import Data.Ord
 

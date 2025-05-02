@@ -2,7 +2,7 @@
 -- :r (reload)               (Carga el último archivo cargado)
 -- :i (info)    function     (Info sobre algo)
 -- :q (quit)                 (Salir de GHCI)       
-
+ 
 module Lab1 where
  
 import Data.List -- (map, length, head, tail, ...)

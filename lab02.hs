@@ -1,5 +1,5 @@
 module Lab02 where
-
+ 
 {-
    Laboratorio 2
    EDyAII 2022

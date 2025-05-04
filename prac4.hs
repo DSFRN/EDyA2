@@ -3,8 +3,8 @@ module Prac4 where
 import Data.Bool
 import Data.List
 
-data BTree a = EB | LeafB a | NodeB (BTree a) a (BTree a)
-data BST a   = E  | Leaf a  | Node (BST a) a (BST a)
+data BTree a = EB | LeafB a | NodeB (BTree a) a (BTree a) deriving Show
+data BST a   = E  | Leaf a  | Node (BST a) a (BST a) deriving Show
 
 -- (1)
 completo :: a -> Int -> BTree a
@@ -12,6 +12,15 @@ completo _ 0 = EB
 completo a 1 = LeafB a
 completo a n = let ch = completo a (n-1)
                in (NodeB ch a ch)
+
+balanceado :: a -> Int -> BTree a
+balanceado _ 0 = EB
+balanceado a 1 = LeafB a
+balanceado a n = let m   = (n - 1)
+                     mid = (div m 2)
+                     ch1 = balanceado a mid
+                     ch2 = balanceado a (m - mid)
+                 in (NodeB ch1 a ch2)
 
 -- (2)
 maximumBST :: (Ord a) => BST a -> a

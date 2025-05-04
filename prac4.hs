@@ -79,14 +79,15 @@ member b (Node l a r) = if (a > b)
 
 
 -- (5)
-data Color = R | B
-data RBT a = ERB | RBNode Color (RBT a) a (RBT a)
+data Color = R | B deriving Show
+data RBT a = ERB | RBNode Color (RBT a) a (RBT a) deriving Show
 
 data T123 a =
        E123
      | Node2 a (T123 a) (T123 a)
      | Node3 a a (T123 a) (T123 a) (T123 a)
      | Node4 a a a (T123 a) (T123 a) (T123 a) (T123 a)
+       deriving Show
 
 fromRBT :: RBT a -> T123 a
 fromRBT ERB = E123

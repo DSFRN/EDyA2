@@ -382,14 +382,14 @@ data Arbol a = Hoja a | Nodo a (Arbol a) (Arbol a)
    2^(altura (Hoja a))
 
 -- Caso t = (Nodo a t1 t2)
-   hojas (Nodo a t1 t2)             {-  lema 1: ∀ a,b > 0  -}
--- = { hojas 2 }                    {-   a + b < max a b   -}
-   (hojas t1) + (hojas t2)}
+   hojas (Nodo a t1 t2)           {-  lema 1: ∀ a,b > 0   -}
+-- = { hojas 2 }                  {-    a <= max a b      -}
+   (hojas t1) + (hojas t2)}       {-    b <= max a b      -}
 -- < { HI }
    2^(altura t1) + 2^(altura t2)
 -- < { lema 1 }
-   2^(max (altura t1) (altura t2))
--- < { lema pedorro : ∀ a, a < 1 + a }
+   2 * 2^(max (altura t1) (altura t2))
+-- < { aritmética }
    2^(1 + max (altura t1) (altura t2))
 -- = { altura 2 }
    2^(altura (Nodo a t1 t2))

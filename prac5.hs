@@ -502,11 +502,11 @@ data Arbol a = Hoja a | Nodo a (Arbol a) (Arbol a)
 
 {- Definición de Inducción Estructural para [a] :                 -}
 {-  dada una propiedad P sobre [a],                               -}
-{-  P(xs) vale ∀ xs::[a] si :                                     -}
+{-  P(xss) vale ∀ xss::[a] si :                                   -}
 {-  * P([])                                                       -}
-{-  * P(xs) => P(x:xs)                                            -}
+{-  * P(xss) => P(xs:xss)                                         -}
 
-{- Sea p(xs) : (join . map join) (xs) = (join . join) (xs)        -}
+{- Sea p(xss) : (join . map join) (xss) = (join . join) (xss)     -}
 {- Probamos p con Inducción Estructural sobre [a]                 -}
 
 -- Caso []
@@ -521,25 +521,29 @@ data Arbol a = Hoja a | Nodo a (Arbol a) (Arbol a)
    (join . join) []
 
 -- Caso (x:xs)
-   (join . map join) (x:xs)
+   (join . map join) (xs:xss)
 -- = { def (.) }
-   join (map join (x:xs))
+   join (map join (xs:xss))
 -- = { map 2 }
-   join (join x : map join xs)
+   join (join xs : map join xss)
 -- = { join 2 }
-   join x ++ join (map join xs)
+   join xs ++ join (map join xss)
 -- = { def (.) }
-   join x ++ (join . map join) (xs)
+   join xs ++ (join . map join) (xss)
 -- = { HI }
-   join x ++ (join . join) (xs)
--- 
+   join xs ++ (join . join) (xss)
+-- = { def (.) }
+   join xs ++ join (join xss)
+-- = { join 2 }
+   join (join xs : join xss)
+--                                            
    ...
 --
-   join (x ++ join xs)
---
-   join (join (x:xs))
---
-   (join . join) (x:xs)
+   join (xs ++ join xss)
+-- = { join 2 }
+   join (join (x:xss))
+-- = { def (.) }
+   (join . join) (xs:xss)
 
 
 -- (12)

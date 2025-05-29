@@ -432,11 +432,11 @@ data Arbol a = Hoja a | Nodo a (Arbol a) (Arbol a)
 
 -- Caso t = (Node a l r)
    (map f . flatten) (Node a l r)
--- = { def (.) }                                {-            lema map:           -}
-   map f (flatten (Node a l r))                 {-    map ([a] ++ [b] ++ [c])     -}
--- = { flatten 2 }                              {-                 =              -}
-   map f ((flatten l) ++ [a] ++ (flatten r))    {- map [a] ++ map [b] ++ map [c]  -}
--- = { lema map }
+-- = { def (.) }                                {-           prop. map:          -}
+   map f (flatten (Node a l r))                 {-    map ([a] ++ [b] ++ [c])    -}
+-- = { flatten 2 }                              {-                 =             -}
+   map f ((flatten l) ++ [a] ++ (flatten r))    {- map [a] ++ map [b] ++ map [c] -}
+-- = { prop. map }
    map f (flatten l) ++ map f [a] ++ map f (flatten r)
 -- = { HI, map }
    flatten (mapTree f l) ++ [f a] ++ flatten (mapTree f r)
@@ -531,19 +531,32 @@ data Arbol a = Hoja a | Nodo a (Arbol a) (Arbol a)
 -- = { def (.) }
    join xs ++ (join . map join) (xss)
 -- = { HI }
-   join xs ++ (join . join) (xss)
--- = { def (.) }
-   join xs ++ join (join xss)
--- = { join 2 }
-   join (join xs : join xss)
---                                            
-   ...
---
+   join xs ++ (join . join) (xss)     {-    prop. join:     -}
+-- = { def (.) }                      {-   join(xs ++ ys)   -}
+   join xs ++ join (join xss)         {-          =         -}
+-- = { prop. join }                   {- join xs ++ join ys -}
    join (xs ++ join xss)
 -- = { join 2 }
-   join (join (x:xss))
+   join (join (xs:xss))
 -- = { def (.) }
    (join . join) (xs:xss)
 
 
 -- (12)
+
+data BST a = Leaf a | Node (BST a) a (BST a)
+
+insert :: (Ord a) => a -> BST a -> BST a
+
+insert b (Leaf a)       | (b >= a)  = (Node EST a (Leaf b))
+                        | otherwise = (Node (Leaf b) a EST)
+
+insert b (Node t1 a t2) | (b >= a)  = insert b t2
+                        | otherwise = insert b t1
+
+
+inorder :: (Ord a) => BST a -> [a]
+inorder (Leaf a) = [a]
+inorder (Node t1 a t2) = inorder t1 ++ [a] ++ inorder t2
+
+

@@ -41,10 +41,10 @@ dropT n (Node h l a r) | n == (size l)  = Node (h-n) Empty a r
                        | otherwise      = dropT (n - ((size l)+1)) r
 
 -- (2) Divide and Conquer
-data Tree a = E | Leaf a | Join (Tree a) (Tree a)
+data Tree a = Empt | Leaf a | Join (Tree a) (Tree a)
 
 mapreduce :: (a -> b) -> (b -> b -> b) -> b -> Tree a -> b
-mapreduce _ _ e E          = e
+mapreduce _ _ e Empt       = e
 mapreduce f _ _ (Leaf a)   = f a
 mapreduce f g e (Join l r) = let (l', r') = (mapreduce f g e l) ||| (mapreduce f g e r)
                               in g l' r'
@@ -59,6 +59,55 @@ mcss t = let fst' (a,_,_,_) = a
                (trimax (c+x) a w, max b (d+x), max y (c+z), d+z)
           in fst' (mapreduce f g (0,0,0,0) t)
 
--- (3) Ayudamos a YPF
+-- (3)
+t1 = Join (Join (Leaf 10) (Leaf 15)) (Leaf 20)
+t2 = Join (Join (Leaf 25) (Leaf 5)) (Leaf 30)
+tt = Join (Leaf t1) (Leaf t2)
 
+reduce :: (a -> a -> a) -> a -> Tree a -> a
+reduce _ e Empt       = e
+reduce _ _ (Leaf a)   = a
+reduce f e (Join l r) = let (l', r') = (reduce f e l) ||| (reduce f e r)
+                         in f l' r'
 
+-- sufijos :: (Num a) => Tree a -> Tree (Tree a)
+
+-- conSufijos :: (Num a) => Tree a -> Tree (a, Tree a)
+
+maxT :: (Num a, Ord a) => Tree a -> a
+maxT t = reduce max 0 t
+
+maxAll :: (Num a, Ord a) => Tree (Tree a) -> a
+maxAll t = mapreduce maxT max 0 t
+
+-- (4)
+data T a = E | N (T a) a (T a)
+altura :: T a -> Int
+altura E         = 0
+altura (N l x r) = 1 + max(altura l, altura r)
+
+-- a)
+combinar :: T a -> T a -> T a
+combinar E t2         = t2
+combinar (N l a r) t2 = N (combinar l r) a t2
+
+-- b)
+filterT :: (a -> Bool) -> T a -> T a
+filterT _ E         = E
+filterT p (N l a r) = let (l', r') = (filterT p l) ||| (filterT p r)
+                      in if p a
+                         then N l' a r'
+                         else combinar l' r'
+
+-- c)
+quicksortT :: (Num a, Ord a) => T a -> T a
+quicksortT E         = E
+quicksortT (N l a r) = let (l1, r1) = filterT (<= a) l ||| filterT (<= a) r
+                           (l2, r2) = filterT (> a) l ||| filterT (> a) r
+                           (men, may) =
+                             quicksortT (combinar l1 r1) ||| quicksortT (combinar l2 r2)
+                        in N men a may
+
+-- (5)
+-- splitAt :: BTree a -> Int -> (BTree a, BTree a)
+-- rebalance :: BTree a → BTree a

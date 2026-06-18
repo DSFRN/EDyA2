@@ -560,3 +560,42 @@ inorder (Leaf a) = [a]
 inorder (Node t1 a t2) = inorder t1 ++ [a] ++ inorder t2
 
 
+{---------------------------------------------------------------------}
+ -- Ejemplo de ej. de parcial:
+
+--  Definición de Inducción Estructural para (Tree key val) :
+--  dada una propiedad P sobre un (Tree key val),
+--  P(t) vale ∀ t::(Tree key val) si :
+--  * P(E)
+--  * P(t) => P(J m l x r)
+--  Sea p(t) : t es un BST => takeMax t n es un BST (p.t. n natural).
+--  Probamos p con Inducción Estructural sobre (Tree key val)
+
+-- Caso Base (t = E):
+  takeMax E n
+-- = <def. takeMax 1>
+  E
+-- BST por def.
+
+-- Paso Inductivo (t = (J m l x r))
+--  (HI 1) si R es un BST => takeMax R n es un BST.
+--  (HI 2) si L es un BST => takeMax L n es un BST.
+-- Supongamos que la propiedad vale para los árboles L y R.
+-- Queremos ver que también vale para T = (J m L x R).
+
+  takeMax (J m L x R) n
+-- = <takeMax 3, n = size R>
+  R
+-- BST por def.
+
+  takeMax (J m L x R) n
+-- = <takeMax 3, n < size R>
+  takeMax R n
+-- BST por <HI 1>
+
+  takeMax (J m L x R) n
+-- = <takeMax 3, n > size R>
+  (J n (takeMax L (n-(size R)-1)) x R)
+-- BST por <HI 2> donde (n-(size R)-1) es un natural.
+
+
